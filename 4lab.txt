@@ -1,0 +1,19 @@
+use16
+org 100h
+    movsx ax,[a]
+    imul [b] ;(a * b)
+    mov bx, [b]
+    add bx, [c] ;(b + c)
+    idiv bx ;(a * b) / (b + c)
+    mov word[k], ax
+    mov word[k + 2], dx
+
+
+    mov ax,4C00h
+    int 21h
+
+;-------------------------------------
+a   db -55
+b   dw -3145
+c   dw 100
+k   dd ?
