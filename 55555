@@ -1,0 +1,35 @@
+Private Sub Worksheet_Activate()
+    If CurrentUserCol < 2 Then Exit Sub
+    
+    Dim ws As Worksheet
+    Set ws = Sheets("Система доступа")
+    
+    Dim row As Integer
+    row = 6
+    Do While ws.Cells(row, 1).Value <> ""
+        If ws.Cells(row, 1).Value = "Система доступа" Then
+            Dim acc As Integer
+            acc = ws.Cells(row, CurrentUserCol).Value
+            
+            Select Case acc
+                Case 1  ' Только просмотр — защищаем
+                    Me.Unprotect
+                    Me.Protect UserInterfaceOnly:=True, DrawingObjects:=False, Contents:=True, Scenarios:=True
+                    Me.CommandButton2.Enabled = False
+                    Me.CommandButton3.Enabled = False
+                    Me.CommandButton4.Enabled = False
+                Case 2  ' Полный доступ — снимаем защиту
+                    Me.Unprotect
+                    Me.CommandButton2.Enabled = True
+                    Me.CommandButton3.Enabled = True
+                    Me.CommandButton4.Enabled = True
+                Case 0  ' Нет доступа
+                    Me.CommandButton2.Enabled = False
+                    Me.CommandButton3.Enabled = False
+                    Me.CommandButton4.Enabled = False
+            End Select
+            Exit Do
+        End If
+        row = row + 1
+    Loop
+End Sub
